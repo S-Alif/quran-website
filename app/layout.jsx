@@ -1,6 +1,5 @@
 import MainLayout from "@/components/MainLayout";
 import { ThemeProvider } from "next-themes";
-import { Toaster } from "@/components/ui/sonner"
 import "./globals.css";
 
 export default function RootLayout({ children }) {
@@ -16,8 +15,6 @@ export default function RootLayout({ children }) {
           <MainLayout>
             {children}
           </MainLayout>
-
-          <Toaster />
         </ThemeProvider>
       </body>
     </html>

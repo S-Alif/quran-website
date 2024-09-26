@@ -79,10 +79,13 @@ function Navbar() {
               <Link href="">Home</Link>
             </li>
             <li className={navLinkList}>
-              <Link href="">Qur'An</Link>
+              <Link href="/surah">Surah</Link>
             </li>
             <li className={navLinkList}>
-              <Link href="">Audio</Link>
+              <Link href="/juz">Juz</Link>
+            </li>
+            <li className={navLinkList}>
+              <Link href="/audio">Audio</Link>
             </li>
             <li className={navLinkList}>
               <Link href="">Calendar</Link>
