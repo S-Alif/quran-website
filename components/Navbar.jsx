@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Button } from './ui/button'
 import { Moon, Sun } from 'lucide-react'
@@ -16,13 +16,45 @@ import logo from "../public/images/QuranApp-logo-green.png"
 function Navbar() {
 
   const { setTheme } = useTheme()
+  const [showNavbar, setShowNavbar] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
+  const [isTop, setIsTop] = useState(true)
+
+  const controlNavbar = () => {
+    if (typeof window !== 'undefined') {
+      const currentScrollY = window.scrollY;
+      console.log(currentScrollY, lastScrollY)
+      
+      if (currentScrollY === 0) {
+        setShowNavbar(true)
+        setIsTop(true)
+      } else if (currentScrollY < lastScrollY) {
+        setShowNavbar(true)
+        setIsTop(false)
+      } else if (currentScrollY > lastScrollY) {
+        setShowNavbar(false)
+        setIsTop(false)
+      }
+
+      setLastScrollY(currentScrollY);
+    }
+  }
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar)
+    }
+  }, [lastScrollY])
 
   // nav link list design
   const navLinkList = "ml-2 font-medium text-slate-50 px-4 hover:bg-white hover:text-black h-full flex items-center jutify-center"
 
 
   return (
-    <nav className='navigation w-full h-[70px] bg-primary absolute top-0'>
+    <nav 
+      className={`navigation w-full h-[70px] fixed top-0 duration-500
+      ${showNavbar ? "translate-y-0" : "-translate-y-[110%]"} ${isTop ? "bg-transparent" : "bg-primary"}`}
+    >
       <div className="container h-full flex justify-between items-center">
 
         {/* logo */}
