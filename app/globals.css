@@ -24,7 +24,6 @@ body {
   @apply max-w-[1400px];
   @apply mx-auto;
   @apply px-3;
-  @apply h-auto;
 }
 
 @layer utilities {
