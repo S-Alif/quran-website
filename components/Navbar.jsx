@@ -22,8 +22,7 @@ function Navbar() {
 
   const controlNavbar = () => {
     if (typeof window !== 'undefined') {
-      const currentScrollY = window.scrollY;
-      console.log(currentScrollY, lastScrollY)
+      const currentScrollY = window.scrollY
       
       if (currentScrollY === 0) {
         setShowNavbar(true)
@@ -36,7 +35,7 @@ function Navbar() {
         setIsTop(false)
       }
 
-      setLastScrollY(currentScrollY);
+      setLastScrollY(currentScrollY)
     }
   }
 
@@ -53,7 +52,7 @@ function Navbar() {
   return (
     <nav 
       className={`navigation w-full h-[70px] fixed top-0 duration-500
-      ${showNavbar ? "translate-y-0" : "-translate-y-[110%]"} ${isTop ? "bg-transparent" : "bg-primary"}`}
+      ${showNavbar ? "translate-y-0 shadow-lg" : "-translate-y-[110%]"} ${isTop ? "bg-transparent shadow-none" : "bg-primary"}`}
     >
       <div className="container h-full flex justify-between items-center">
 
@@ -76,7 +75,7 @@ function Navbar() {
         <div className="links h-full flex justify-between items-center gap-4">
           <ul className='list-none h-full flex flex-row'>
             <li className={navLinkList}>
-              <Link href="">Home</Link>
+              <Link href="/">Home</Link>
             </li>
             <li className={navLinkList}>
               <Link href="/surah">Surah</Link>

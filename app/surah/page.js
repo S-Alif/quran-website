@@ -1,6 +1,7 @@
 import { dataFetcher } from "@/api/dataFetcher"
 import endpoints from "@/api/endpoints"
 import PageHeader from "@/components/PageHeader"
+import SurahListCard from "@/components/SurahListCard"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 
 
@@ -42,8 +43,15 @@ async function SurahPage() {
 
           <h3 className="title text-center text-primary">All surah</h3>
 
-          {JSON.stringify(surahList)}
-
+          {/* display cards */}
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+            {
+              surahList != null &&
+              surahList.map((e, index) => (
+                <SurahListCard surahListItem={e} key={index}  />
+              ))
+            }
+          </div>
         </div>
       </section>
 
