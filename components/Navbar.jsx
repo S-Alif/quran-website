@@ -65,6 +65,7 @@ function Navbar() {
               width={30}
               height={30}
               alt='Quran Web'
+              className='w-auto h-auto'
             />
 
             <h3 className='font-bold text-xl text-slate-50'>Qur'An Web</h3>
