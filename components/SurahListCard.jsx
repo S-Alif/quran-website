@@ -17,7 +17,7 @@ function SurahListCard({surahListItem}) {
         <p>{surahListItem?.numberOfAyahs} ayahs</p>
       </CardContent>
       <CardFooter>
-        <Link href={`/surah/read-surah?number=${surahListItem?.number}&offset=0&limit=10`} className={buttonVariants({ variant: "default" }) + " mx-auto"}>Read surah</Link>
+        <Link href={`/surah/read-surah?number=${surahListItem?.number}&lang=en.asad&offset=0&limit=10`} className={buttonVariants({ variant: "default" }) + " mx-auto"}>Read surah</Link>
       </CardFooter>
     </Card>
   )

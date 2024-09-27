@@ -2,10 +2,10 @@ import { dataFetcher } from "@/api/dataFetcher"
 import endpoints from "@/api/endpoints"
 import PageHeader from "@/components/PageHeader"
 import SurahListCard from "@/components/SurahListCard"
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 
 
-async function SurahPage() {
+
+const SurahPage = async () => {
 
   const getSurahList = async () => {
     let result = await dataFetcher(endpoints.surahList)
@@ -22,20 +22,17 @@ async function SurahPage() {
       <PageHeader 
         headline={"See the list of surah"}
         bgImage={"https://plus.unsplash.com/premium_photo-1677587536653-0d02efbb70ee?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
-      >
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/" className="text-white font-medium hover:text-primary text-[16px]">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className={"text-white"} />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/surah" className="text-white font-medium hover:text-primary text-[16px]">Surah</BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
-      </PageHeader>
+        breadCrumbList={[
+          {
+            title: "Home",
+            href: "/"
+          },
+          {
+            title: "Surah",
+            href: "/surah"
+          }
+        ]}
+      />
 
       {/* display surah list */}
       <section className="surah-list section">
@@ -44,7 +41,7 @@ async function SurahPage() {
           <h3 className="title text-center text-primary">All surah</h3>
 
           {/* display cards */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+          <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
             {
               surahList != null &&
               surahList.map((e, index) => (
