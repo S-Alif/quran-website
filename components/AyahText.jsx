@@ -4,7 +4,7 @@ import { buttonVariants } from './ui/button'
 
 const AyahText = ({ayah, translation, ayahNumber}) =>  {
   return (
-    <Card className="hover:border-transparent hover:shadow-xl transition-shadow duration-300 mb-4">
+    <Card className="hover:border-transparent dark:border-gray-400 hover:shadow-xl transition-shadow duration-300 mb-4">
       <CardHeader>
         <CardTitle className={"p-3 bg-primary text-white rounded-md max-w-11 max-h-11 text-center"}>
           {ayahNumber}

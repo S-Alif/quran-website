@@ -66,7 +66,7 @@ function Read({ englishName, language, infoMap, ayahs, numberOfAyahs, offset, li
       </section>
 
       {/* show surah */}
-      <section className="show-surah section bg-gray-100" id="show-surah">
+      <section className="show-surah section bg-gray-100 dark:bg-inherit" id="show-surah">
         <div className="container">
           <h3 className='title text-center text-primary font-arabic font-bold'>بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</h3>
 
