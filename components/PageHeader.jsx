@@ -1,6 +1,7 @@
 import React from 'react'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 
-function PageHeader({children, headline, bgImage}) {
+function PageHeader({children, headline, bgImage, breadCrumbList = []}) {
 
   const backgroundImage = bgImage ? bgImage : "https://images.unsplash.com/photo-1693590614566-1d3ea9ef32f7?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
@@ -16,7 +17,23 @@ function PageHeader({children, headline, bgImage}) {
     >
       <div className="container h-full flex justify-center items-center flex-col">
         <h1 className='text-4xl font-semibold text-white pb-5'>{headline}</h1>
-        {children && children}
+        <Breadcrumb>
+          <BreadcrumbList>
+            {
+              breadCrumbList.length > 0 &&
+              breadCrumbList.map((e, index) => (
+                <>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href={e.href} className="text-white font-medium hover:text-primary text-[16px]">{e.title}</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  {
+                    index != (breadCrumbList.length - 1) && <BreadcrumbSeparator className={"text-white"} />
+                  }
+                </>
+              ))
+            }
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
     </section>
   )
