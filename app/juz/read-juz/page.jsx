@@ -35,7 +35,7 @@ const ReadJuz = async ({ searchParams }) => {
 
   return (
     <Read
-      juzNumber={num}
+      juzNumber={number}
       infoMap={infoMap}
       ayahs={ayahs}
       numberOfAyahs={ayahs.length}

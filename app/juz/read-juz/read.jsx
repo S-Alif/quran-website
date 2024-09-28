@@ -4,7 +4,7 @@ import AyahText from '@/components/AyahText'
 import CardLoader from '@/components/CardLoader'
 import PageHeader from '@/components/PageHeader'
 import ScrollToTop from '@/components/ScrollToTop'
-import SurahInfoCard from '@/components/SurahInfoCard'
+import SurahListCard from '@/components/SurahListCard'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '@/components/ui/select'
 import { randomBgImage } from '@/helpers/bgImage'
@@ -26,6 +26,7 @@ function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, transla
   const router = useRouter()
 
 
+  // internal pagination
   const internalPagination = (languageChanged, offset, newTranslation) => {
     let startIndex = (offset - 1) * limit
     let endIndex = startIndex + limit
@@ -82,6 +83,7 @@ function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, transla
     }
 
     if ((pageOffset * limit) >= numberOfAyahs) return
+    router.push(`/juz/read-juz?number=${juzNumber}&lang=${laguageValue}&offset=${newOffset}&limit=${limit}`, {scroll: false, shalow: true})
     internalPagination(languageChanged, newOffset)
   }
 
@@ -106,7 +108,7 @@ function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, transla
             href: "/"
           },
           {
-            title: "Surah",
+            title: "Juz",
             href: "/juz"
           },
           {
@@ -121,16 +123,20 @@ function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, transla
       <section className="surah-details section" id="surah-details">
         <div className="container">
 
-          <h3 className='title text-center text-primary'>Surah information</h3>
+          <h3 className='title text-center text-primary'>Juz information</h3>
 
           {/* display cards */}
           <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3 pt-4">
-            {/* {
+            {
               infoMap != null &&
-              Object.keys(infoMap).map((e, index) => (
-                <SurahInfoCard infoName={e} infoValue={infoMap[e]} key={index} />
-              ))
-            } */}
+              Object.keys(infoMap).map((e) => {
+                const surah = infoMap[e]
+
+                return (
+                  <SurahListCard surahListItem={surah}  />
+                )
+              })
+            }
           </div>
         </div>
       </section>
