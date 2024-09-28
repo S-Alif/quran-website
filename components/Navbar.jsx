@@ -47,6 +47,7 @@ function Navbar() {
 
   // nav link list design
   const navLinkList = "ml-2 font-medium text-slate-50 px-4 hover:bg-white hover:text-black h-full flex items-center jutify-center"
+  const dropdownItemClass = "cursor-pointer hover:!bg-emerald-500 hover:!text-white"
 
 
   return (
@@ -101,13 +102,13 @@ function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("light")}>
+                <DropdownMenuItem className={dropdownItemClass} onClick={() => setTheme("light")}>
                   Light
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("dark")}>
+                <DropdownMenuItem className={dropdownItemClass} onClick={() => setTheme("dark")}>
                   Dark
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("system")}>
+                <DropdownMenuItem className={dropdownItemClass} onClick={() => setTheme("system")}>
                   System
                 </DropdownMenuItem>
               </DropdownMenuContent>

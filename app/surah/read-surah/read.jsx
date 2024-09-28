@@ -3,6 +3,7 @@
 import AyahText from '@/components/AyahText'
 import CardLoader from '@/components/CardLoader'
 import PageHeader from '@/components/PageHeader'
+import ScrollToTop from '@/components/ScrollToTop'
 import SurahInfoCard from '@/components/SurahInfoCard'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '@/components/ui/select'
@@ -184,6 +185,8 @@ function Read({ englishName, language, infoMap, ayahs = [], numberOfAyahs, offse
           }
         </div>
       </section>
+
+      <ScrollToTop />
 
     </div>
   )

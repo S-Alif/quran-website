@@ -1,6 +1,5 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { buttonVariants } from './ui/button'
 
 const AyahText = ({ayah, translation, ayahNumber}) =>  {
   return (
@@ -12,8 +11,8 @@ const AyahText = ({ayah, translation, ayahNumber}) =>  {
       </CardHeader>
 
       <CardContent>
-        <p className='font-arabic text-4xl font-bold pb-3 text-end'>{ayah}</p>
-        {translation && <p className='text-xl pt-2 border-t'>{translation}</p>}
+        <p className='font-arabic text-4xl font-bold pb-3 text-end leading-loose'>{ayah}</p>
+        {translation && <p className='text-xl pt-2 border-t leading-relaxed'>{translation}</p>}
       </CardContent>
     </Card>
   )
