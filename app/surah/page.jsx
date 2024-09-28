@@ -1,6 +1,7 @@
 import { dataFetcher } from "@/app/api/dataFetcher"
 import endpoints from "@/app/api/endpoints"
 import PageHeader from "@/components/PageHeader"
+import ScrollToTop from "@/components/ScrollToTop"
 import SurahListCard from "@/components/SurahListCard"
 
 
@@ -51,6 +52,8 @@ const SurahPage = async () => {
           </div>
         </div>
       </section>
+
+      <ScrollToTop />
 
     </div>
   )

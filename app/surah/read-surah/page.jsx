@@ -12,6 +12,12 @@ const fetchSurah = async (num, language, offset, limit) => {
   return result
 }
 
+// fetch translations
+const getTranslationList = async () => {
+  let list = await dataFetcher(endpoints.translationList)
+  return list
+}
+
 const ReadSurah = async ({ searchParams }) =>  {
 
   const num = searchParams?.number
@@ -24,6 +30,8 @@ const ReadSurah = async ({ searchParams }) =>  {
   const translation = surahWithTranslation[1].ayahs
   const infoMap = {name, englishName, englishNameTranslation, number, numberOfAyahs, revelationType}
 
+  const translationList = await getTranslationList()
+
   return (
     <Read 
       englishName={englishName}
@@ -34,6 +42,7 @@ const ReadSurah = async ({ searchParams }) =>  {
       limit={limit}
       translations={translation}
       language={language}
+      translationsList={translationList}
     />
   )
 }
