@@ -3,23 +3,34 @@
 import AyahText from '@/components/AyahText'
 import PageHeader from '@/components/PageHeader'
 import SurahInfoCard from '@/components/SurahInfoCard'
+import { Button } from '@/components/ui/button'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 function Read({ englishName, language, infoMap, ayahs, numberOfAyahs, offset, limit, translations}) {
 
-  console.log(ayahs, translations)
-
-  const [readMoreBtn, setReadMoreBtn] = useState(false)
+  const [currentAyahs, setCurrentAyahs] = useState(ayahs)
+  const [currentTranslations, setCurrentTranslations] = useState(translations)
+  const [pageOffset, setPageOffset] = useState(offset)
   const [lang, setLang] = useState(language || "en.asad")
 
   // read more
-  const readMore = () => {
-    if((offset * limit) <= numberOfAyahs) return
-    const newOffset = offset + 1
-    router.push(
-      `/surah/read-surah?number=${infoMap.number}&lang=${lang}&offset=${newOffset}&limit=${limit}`,
-      { scroll: false }
-    )
+  const readMore = async () => {
+    if((offset * limit) >= numberOfAyahs) return
+    const newOffset = pageOffset + 1
+    
+    try {
+      const response = await axios.get(`/api/surah?number=${infoMap.number}&lang=${language}&offset=${newOffset}&limit=${limit}`)
+      const data = await response.data
+
+      setCurrentAyahs([...currentAyahs, ...data.ayahs])
+      setCurrentTranslations([...currentTranslations, ...data.translations])
+      setPageOffset(newOffset)
+    } catch (error) {
+      alert("something went wrong")
+    }
+    
   }
 
 
@@ -72,16 +83,24 @@ function Read({ englishName, language, infoMap, ayahs, numberOfAyahs, offset, li
 
           <div className="show-surah-text pt-4">
             {
-              (ayahs != null && ayahs.length > 0) &&
-              ayahs.map((e, index) => (
+              (currentAyahs != null && currentAyahs.length > 0) &&
+              currentAyahs.map((e, index) => (
                 <AyahText 
                   ayah={e.text}
                   ayahNumber={e.numberInSurah}
-                  translation={translations[index].text}
+                  translation={currentTranslations[index].text}
+                  key={index}
                 />
               ))
             }
           </div>
+
+          {
+            (pageOffset * limit) < numberOfAyahs &&
+            <div className='pt-5 text-center'>
+                <Button className="w-full max-w-96 py-5" onClick={readMore}>Read more</Button>
+            </div>
+          }
         </div>
       </section>
 

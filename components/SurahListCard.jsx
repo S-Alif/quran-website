@@ -5,6 +5,7 @@ import { buttonVariants } from './ui/button'
 
 
 function SurahListCard({surahListItem}) {
+
   return (
     <Card className="hover:border-transparent hover:shadow-xl transition-shadow duration-300">
       <CardHeader className="text-center">
@@ -17,7 +18,19 @@ function SurahListCard({surahListItem}) {
         <p>{surahListItem?.numberOfAyahs} ayahs</p>
       </CardContent>
       <CardFooter>
-        <Link href={`/surah/read-surah?number=${surahListItem?.number}&lang=en.asad&offset=0&limit=10`} className={buttonVariants({ variant: "default" }) + " mx-auto"}>Read surah</Link>
+        <Link 
+          href={{ 
+            pathname: "/surah/read-surah", 
+            query:{
+              number: surahListItem?.number,
+              lang: "en.asad",
+              offset: "1",
+              limit: 10,
+            }
+          }}
+          className={buttonVariants({ variant: "default" }) + " mx-auto"}>
+            Read surah
+          </Link>
       </CardFooter>
     </Card>
   )

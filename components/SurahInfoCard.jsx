@@ -13,7 +13,7 @@ function SurahInfoCard({infoName, infoValue}) {
           {infoName == "numberOfAyahs" && "Ayahs"}
           {infoName == "revelationType" && "Revelation"}
         </CardTitle>
-        <CardDescription className={`font-medium text-xl ${infoName == "name" && "font-arabic"}`}>{infoValue}</CardDescription>
+        <CardDescription className={`font-medium text-xl ${infoName == "name" && "font-arabic font-bold text-2xl"}`}>{infoValue}</CardDescription>
       </CardHeader>
     </Card>
   )

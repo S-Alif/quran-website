@@ -1,5 +1,5 @@
-import { dataFetcher } from "@/api/dataFetcher"
-import endpoints from "@/api/endpoints"
+import { dataFetcher } from "@/app/api/dataFetcher"
+import endpoints from "@/app/api/endpoints"
 import PageHeader from "@/components/PageHeader"
 import SurahListCard from "@/components/SurahListCard"
 

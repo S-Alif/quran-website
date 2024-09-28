@@ -22,14 +22,14 @@ function PageHeader({children, headline, bgImage, breadCrumbList = []}) {
             {
               breadCrumbList.length > 0 &&
               breadCrumbList.map((e, index) => (
-                <>
+                <div className='flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5' key={index}>
                   <BreadcrumbItem>
                     <BreadcrumbLink href={e.href} className="text-white font-medium hover:text-primary text-[16px]">{e.title}</BreadcrumbLink>
                   </BreadcrumbItem>
                   {
                     index != (breadCrumbList.length - 1) && <BreadcrumbSeparator className={"text-white"} />
                   }
-                </>
+                </div>
               ))
             }
           </BreadcrumbList>

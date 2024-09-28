@@ -1,5 +1,5 @@
-import { dataFetcher } from '@/api/dataFetcher'
-import endpoints from '@/api/endpoints'
+import { dataFetcher } from '@/app/api/dataFetcher'
+import endpoints from '@/app/api/endpoints'
 import React from 'react'
 import Read from './read'
 
@@ -7,7 +7,7 @@ import Read from './read'
 const fetchSurah = async (num, language, offset, limit) => {
   const edition = 'quran-unicode'
   const result = await dataFetcher(
-    `${endpoints.surahList}/${num}/editions/${edition},${language}?offset=${offset}&limit=${limit}`
+    `${endpoints.surahList}/${num}/editions/${edition},${language}?offset=${(offset-1) * limit}&limit=${limit}`
   )
   return result
 }
@@ -16,7 +16,7 @@ const ReadSurah = async ({ searchParams }) =>  {
 
   const num = searchParams?.number
   const language = searchParams?.lang || "en.asad"
-  const offset = searchParams?.offset || 0
+  const offset = searchParams?.offset || 1
   const limit = searchParams?.limit || 10
 
   const surahWithTranslation = await fetchSurah(num, language, offset, limit)
@@ -30,7 +30,7 @@ const ReadSurah = async ({ searchParams }) =>  {
       infoMap={infoMap}
       ayahs={ayahs}
       numberOfAyahs={numberOfAyahs}
-      offset={offset}
+      offset={parseInt(offset)}
       limit={limit}
       translations={translation}
       language={language}
