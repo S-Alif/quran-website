@@ -1,11 +1,11 @@
 'use client'
 
 import AyahText from '@/components/AyahText'
+import CardLoader from '@/components/CardLoader'
 import PageHeader from '@/components/PageHeader'
 import SurahInfoCard from '@/components/SurahInfoCard'
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
-import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 function Read({ englishName, language, infoMap, ayahs, numberOfAyahs, offset, limit, translations}) {
@@ -14,6 +14,7 @@ function Read({ englishName, language, infoMap, ayahs, numberOfAyahs, offset, li
   const [currentTranslations, setCurrentTranslations] = useState(translations)
   const [pageOffset, setPageOffset] = useState(offset)
   const [lang, setLang] = useState(language || "en.asad")
+  const [loading, setLoading] = useState(false)
 
   // read more
   const readMore = async () => {
@@ -21,12 +22,14 @@ function Read({ englishName, language, infoMap, ayahs, numberOfAyahs, offset, li
     const newOffset = pageOffset + 1
     
     try {
+      setLoading(true)
       const response = await axios.get(`/api/surah?number=${infoMap.number}&lang=${language}&offset=${newOffset}&limit=${limit}`)
       const data = await response.data
 
       setCurrentAyahs([...currentAyahs, ...data.ayahs])
       setCurrentTranslations([...currentTranslations, ...data.translations])
       setPageOffset(newOffset)
+      setLoading(false)
     } catch (error) {
       alert("something went wrong")
     }
@@ -96,10 +99,19 @@ function Read({ englishName, language, infoMap, ayahs, numberOfAyahs, offset, li
           </div>
 
           {
-            (pageOffset * limit) < numberOfAyahs &&
+            ((pageOffset * limit) < numberOfAyahs && !loading) &&
             <div className='pt-5 text-center'>
                 <Button className="w-full max-w-96 py-5" onClick={readMore}>Read more</Button>
             </div>
+          }
+
+          {
+            loading && 
+            <>
+              <CardLoader />
+              <CardLoader />
+              <CardLoader />
+            </>
           }
         </div>
       </section>
