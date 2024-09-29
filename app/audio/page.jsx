@@ -44,9 +44,7 @@ const Audio = async () => {
               reciterList != null && 
               reciterList.map((e, index) => (
                 <Link
-                  href={{
-                    pathname: "/juz/read-juz",
-                  }}
+                  href={`/audio/${e.identifier}?name=${e.name}&englishName=${e.englishName}`}
                   className=""
                   key={index}
                 >
@@ -62,7 +60,6 @@ const Audio = async () => {
           </div>
         </div>
       </section>
-
 
     </div>
   )

@@ -74,7 +74,6 @@ const Read = ({
     let pageUrl = `/surah/read-surah?number=${infoMap.number}&lang=${language}&offset=${newOffset}&limit=${10}`
     await fetchData(url, pageUrl, newOffset, languageChanged)
   }
-    
 
 
   return (
