@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from './ui/select'
 
 const TranslationSelect = ({value, onChange, list = [], isSurah = false}) => {
 
-  const [language, setLanguage] = useState(value || "en.asad")
+  const [language, setLanguage] = useState(value || isSurah ? 1 : "en.asad")
+
+  console.log(value)
+  useEffect(() => {
+    setLanguage(value)
+    console.log(value)
+  }, [value])
 
   return (
     <section className="translaiton-selection section bg-gray-100 dark:bg-inherit" id="translation-selection">

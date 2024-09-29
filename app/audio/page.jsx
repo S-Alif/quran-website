@@ -51,7 +51,7 @@ const Audio = async () => {
                   <Card className="hover:border-transparent hover:shadow-xl transition-shadow duration-300">
                     <CardHeader className="text-center">
                       <CardTitle className="text-xl font-arabic">{e.name}</CardTitle>
-                      <CardDescription className="text-[17px] font-medium">{e.englishName}</CardDescription>
+                      <CardDescription className="text-[17px] font-medium">Shaykh {e.englishName}</CardDescription>
                     </CardHeader>
                   </Card>
                 </Link>
