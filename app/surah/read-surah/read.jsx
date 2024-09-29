@@ -1,19 +1,22 @@
 'use client'
 
-import AyahText from '@/components/AyahText'
-import CardLoader from '@/components/CardLoader'
+import DisplayAyahs from '@/components/DisplayAyahs'
 import PageHeader from '@/components/PageHeader'
 import ScrollToTop from '@/components/ScrollToTop'
 import SurahInfoCard from '@/components/SurahInfoCard'
 import TranslationSelect from '@/components/TranslationSelect'
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '@/components/ui/select'
 import { randomBgImage } from '@/helpers/bgImage'
 import axios from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 
-function Read({ englishName, language, infoMap, ayahs = [], numberOfAyahs, offset, limit, translations = [], translationsList = []}) {
+const Read = ({ 
+  englishName, language,
+   infoMap, ayahs = [],
+   numberOfAyahs, offset,
+   limit, translations = [], 
+   translationsList = []
+  }) => {
 
   const [currentAyahs, setCurrentAyahs] = useState(ayahs)
   const [currentTranslations, setCurrentTranslations] = useState(translations)
@@ -117,31 +120,6 @@ function Read({ englishName, language, infoMap, ayahs = [], numberOfAyahs, offse
       </section>
 
       {/* select translation */}
-      {/* <section className="translaiton-selection section bg-gray-100 dark:bg-inherit" id="translation-selection">
-        <div className="container">
-          <div className='flex justify-center items-center'>
-            <p className='text-xl font-semibold bg-primary text-white px-5 py-2 rounded-l-md'>Translations</p>
-
-            <Select 
-              onValueChange={(value) => readMoreAndChangeLanguage(value)}
-              value={lang}
-            >
-              <SelectTrigger className="w-[380px] !py-5 rounded-l-none">
-                <SelectValue placeholder="Other translations" />
-              </SelectTrigger>
-              <SelectContent>
-                {
-                  translationsList.map((e, index) => (
-                    <SelectItem value={e.identifier} className="capitalize font-semibold hover:!bg-emerald-500 hover:!text-white cursor-pointer" key={index}>
-                      <span className='font-bold'>{index + 1} . </span>{e.name} <span className='font-medium'>({e.englishName}) : {e.language}</span>
-                    </SelectItem>
-                  ))
-                }
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </section> */}
       <TranslationSelect 
         value={lang}
         onChange={readMoreAndChangeLanguage}
@@ -149,41 +127,17 @@ function Read({ englishName, language, infoMap, ayahs = [], numberOfAyahs, offse
       />
 
       {/* show surah */}
-      <section className="show-surah section" id="show-surah">
-        <div className="container">
-          <h3 className='title text-center text-primary font-arabic font-bold'>بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</h3>
+      <DisplayAyahs 
+        currentAyahs={currentAyahs}
+        currentTranslations={currentTranslations}
+        numberOfAyahs={numberOfAyahs}
+        pageOffset={pageOffset}
+        limit={limit}
+        loading={loading}
+        readMoreAndChangeLanguage={readMoreAndChangeLanguage}
+        lang={lang}
+      />
 
-          <div className="show-surah-text pt-4">
-            {
-              (currentAyahs != null && currentAyahs.length > 0) &&
-              currentAyahs.map((e, index) => (
-                <AyahText 
-                  ayah={e.text}
-                  ayahNumber={e.numberInSurah}
-                  translation={currentTranslations[index].text}
-                  key={index}
-                />
-              ))
-            }
-          </div>
-
-          {
-            ((pageOffset * limit) < numberOfAyahs && !loading) &&
-            <div className='pt-5 text-center'>
-                <Button className="w-full max-w-96 py-5 text-white" onClick={() => readMoreAndChangeLanguage(lang)}>Read more</Button>
-            </div>
-          }
-
-          {
-            loading && 
-            <>
-              <CardLoader />
-              <CardLoader />
-              <CardLoader />
-            </>
-          }
-        </div>
-      </section>
 
       <ScrollToTop />
 

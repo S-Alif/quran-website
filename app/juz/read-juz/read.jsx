@@ -1,18 +1,24 @@
 'use client'
 
-import AyahText from '@/components/AyahText'
-import CardLoader from '@/components/CardLoader'
+import DisplayAyahs from '@/components/DisplayAyahs'
 import PageHeader from '@/components/PageHeader'
 import ScrollToTop from '@/components/ScrollToTop'
 import SurahListCard from '@/components/SurahListCard'
 import TranslationSelect from '@/components/TranslationSelect'
-import { Button } from '@/components/ui/button'
 import { randomBgImage } from '@/helpers/bgImage'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, translations = [], translationsList = [] }) {
+const Read = ({ 
+  juzNumber, 
+  language, 
+  infoMap, 
+  ayahs = [], 
+  numberOfAyahs, 
+  translations = [], 
+  translationsList = [] 
+}) => {
 
   const [currentAyahs, setCurrentAyahs] = useState([])
   const [initialAyahs, setInitialAyahs] = useState(ayahs)
@@ -93,8 +99,6 @@ function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, transla
   }, [])
   
 
-
-
   return (
     <div className='read-surah-page'>
 
@@ -117,7 +121,6 @@ function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, transla
           }
         ]}
       />
-
 
       {/* surah details */}
       <section className="surah-details section" id="surah-details">
@@ -148,43 +151,18 @@ function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, transla
         translationsList={translationsList}
       />
 
-      {/* show surah */}
-      <section className="show-surah section" id="show-surah">
-        <div className="container">
-          <h3 className='title text-center text-primary font-arabic font-bold'>بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</h3>
-
-          <div className="show-surah-text pt-4">
-            {
-              (currentAyahs != null && currentAyahs.length > 0) &&
-              currentAyahs.map((e, index) => (
-                <AyahText
-                  ayah={e.text}
-                  numberInSurah={e.surah?.englishName + " : " + e.numberInSurah}
-                  ayahNumber={e.number}
-                  translation={currentTranslations[index]?.text}
-                  key={index}
-                />
-              ))
-            }
-          </div>
-
-          {
-            ((pageOffset * limit) < numberOfAyahs && !loading) &&
-            <div className='pt-5 text-center'>
-              <Button className="w-full max-w-96 py-5 text-white" onClick={() => readMoreAndChangeLanguage(lang)}>Read more</Button>
-            </div>
-          }
-
-          {
-            loading &&
-            <>
-              <CardLoader />
-              <CardLoader />
-              <CardLoader />
-            </>
-          }
-        </div>
-      </section>
+      {/* show ayahs */}
+      <DisplayAyahs 
+        currentAyahs={currentAyahs}
+        currentTranslations={currentTranslations}
+        numberOfAyahs={numberOfAyahs}
+        pageOffset={pageOffset}
+        limit={limit}
+        loading={loading}
+        readMoreAndChangeLanguage={readMoreAndChangeLanguage}
+        lang={lang}
+        juzpage={true}
+      />
 
       <ScrollToTop />
 
