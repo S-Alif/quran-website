@@ -5,8 +5,8 @@ import CardLoader from '@/components/CardLoader'
 import PageHeader from '@/components/PageHeader'
 import ScrollToTop from '@/components/ScrollToTop'
 import SurahListCard from '@/components/SurahListCard'
+import TranslationSelect from '@/components/TranslationSelect'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '@/components/ui/select'
 import { randomBgImage } from '@/helpers/bgImage'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
@@ -123,7 +123,7 @@ function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, transla
       <section className="surah-details section" id="surah-details">
         <div className="container">
 
-          <h3 className='title text-center text-primary'>Juz information</h3>
+          <h3 className='title text-center text-primary'>Surahs in the juz</h3>
 
           {/* display cards */}
           <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3 pt-4">
@@ -142,31 +142,11 @@ function Read({ juzNumber, language, infoMap, ayahs = [], numberOfAyahs, transla
       </section>
 
       {/* select translation */}
-      <section className="translaiton-selection section bg-gray-100 dark:bg-inherit" id="translation-selection">
-        <div className="container">
-          <div className='flex justify-center items-center'>
-            <p className='text-xl font-semibold bg-primary text-white px-5 py-2 rounded-l-md'>Translations</p>
-
-            <Select
-              onValueChange={(value) => readMoreAndChangeLanguage(value)}
-              value={lang}
-            >
-              <SelectTrigger className="w-[380px] !py-5 rounded-l-none">
-                <SelectValue placeholder="Other translations" />
-              </SelectTrigger>
-              <SelectContent>
-                {
-                  translationsList.map((e, index) => (
-                    <SelectItem value={e.identifier} className="capitalize font-semibold hover:!bg-emerald-500 hover:!text-white cursor-pointer" key={index}>
-                      <span className='font-bold'>{index + 1} . </span>{e.name} <span className='font-medium'>({e.englishName}) : {e.language}</span>
-                    </SelectItem>
-                  ))
-                }
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </section>
+      <TranslationSelect 
+        value={lang}
+        onChange={readMoreAndChangeLanguage}
+        translationsList={translationsList}
+      />
 
       {/* show surah */}
       <section className="show-surah section" id="show-surah">

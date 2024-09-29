@@ -12,7 +12,7 @@ const JuzPage = async () => {
 
       {/* page header */}
       <PageHeader
-        headline={"See the list of surah"}
+        headline={"See the list of Juz"}
         bgImage={"https://plus.unsplash.com/premium_photo-1677587536653-0d02efbb70ee?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
         breadCrumbList={[
           {
@@ -20,8 +20,8 @@ const JuzPage = async () => {
             href: "/"
           },
           {
-            title: "Surah",
-            href: "/surah"
+            title: "Juz",
+            href: "/juz"
           }
         ]}
       />
@@ -30,7 +30,7 @@ const JuzPage = async () => {
       <section className="surah-list section">
         <div className="container">
 
-          <h3 className="title text-center text-primary">All surah</h3>
+          <h3 className="title text-center text-primary">All Juz</h3>
 
           {/* display cards */}
           <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">

@@ -5,11 +5,12 @@ import CardLoader from '@/components/CardLoader'
 import PageHeader from '@/components/PageHeader'
 import ScrollToTop from '@/components/ScrollToTop'
 import SurahInfoCard from '@/components/SurahInfoCard'
+import TranslationSelect from '@/components/TranslationSelect'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '@/components/ui/select'
 import { randomBgImage } from '@/helpers/bgImage'
 import axios from 'axios'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 
 function Read({ englishName, language, infoMap, ayahs = [], numberOfAyahs, offset, limit, translations = [], translationsList = []}) {
@@ -21,6 +22,9 @@ function Read({ englishName, language, infoMap, ayahs = [], numberOfAyahs, offse
   const [loading, setLoading] = useState(false)
 
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const currentOffset = searchParams.get("offset")
+  const currentLimit = searchParams.get("limit")
 
   // fetch data
   const fetchData = async (url, pageUrl, newOffset, languageChanged) => {
@@ -55,11 +59,10 @@ function Read({ englishName, language, infoMap, ayahs = [], numberOfAyahs, offse
     let languageChanged = laguageValue != lang
     if(languageChanged) {
       setLang(laguageValue)
-      newOffset = newOffset - 1
-      let url = `/api/surah?number=${infoMap.number}&lang=${laguageValue}&offset=${1}&limit=${offset * 10}`
-      let pageUrl = `/surah/read-surah?number=${infoMap.number}&lang=${laguageValue}&offset=${1}&limit=${offset * 10}`
+      let url = `/api/surah?number=${infoMap.number}&lang=${laguageValue}&offset=${1}&limit=${currentOffset * currentLimit}`
+      let pageUrl = `/surah/read-surah?number=${infoMap.number}&lang=${laguageValue}&offset=${1}&limit=${currentOffset * currentLimit}`
 
-      await fetchData(url, pageUrl, newOffset, languageChanged)
+      await fetchData(url, pageUrl, currentOffset, languageChanged)
       return
     }
     
@@ -114,7 +117,7 @@ function Read({ englishName, language, infoMap, ayahs = [], numberOfAyahs, offse
       </section>
 
       {/* select translation */}
-      <section className="translaiton-selection section bg-gray-100 dark:bg-inherit" id="translation-selection">
+      {/* <section className="translaiton-selection section bg-gray-100 dark:bg-inherit" id="translation-selection">
         <div className="container">
           <div className='flex justify-center items-center'>
             <p className='text-xl font-semibold bg-primary text-white px-5 py-2 rounded-l-md'>Translations</p>
@@ -138,7 +141,12 @@ function Read({ englishName, language, infoMap, ayahs = [], numberOfAyahs, offse
             </Select>
           </div>
         </div>
-      </section>
+      </section> */}
+      <TranslationSelect 
+        value={lang}
+        onChange={readMoreAndChangeLanguage}
+        translationsList={translationsList}
+      />
 
       {/* show surah */}
       <section className="show-surah section" id="show-surah">
