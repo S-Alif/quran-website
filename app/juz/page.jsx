@@ -8,7 +8,7 @@ const JuzPage = async () => {
   const data = Array.from({ length: 30 }, (_, i) => i + 1)
 
   return (
-    <div className="surah-list-page">
+    <div className="juz-list-page">
 
       {/* page header */}
       <PageHeader
