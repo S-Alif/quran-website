@@ -16,7 +16,7 @@ const PageHeader = ({ headline, bgImage, breadCrumbList = []}) => {
       }}
     >
       <div className="container h-full flex justify-center items-center flex-col">
-        <h1 className='text-4xl font-semibold text-white pb-5'>{headline}</h1>
+        <h1 className='text-2xl lg:text-4xl font-semibold text-white pb-5 text-center'>{headline}</h1>
         <Breadcrumb>
           <BreadcrumbList>
             {

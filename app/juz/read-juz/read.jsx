@@ -148,7 +148,7 @@ const Read = ({
       <TranslationSelect 
         value={lang}
         onChange={readMoreAndChangeLanguage}
-        translationsList={translationsList}
+        list={translationsList}
       />
 
       {/* show ayahs */}

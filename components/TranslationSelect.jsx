@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from './ui/select'
 
-const TranslationSelect = ({value, onChange, translationsList = []}) => {
+const TranslationSelect = ({value, onChange, list = [], isSurah = false}) => {
 
   const [language, setLanguage] = useState(value || "en.asad")
 
@@ -9,7 +9,7 @@ const TranslationSelect = ({value, onChange, translationsList = []}) => {
     <section className="translaiton-selection section bg-gray-100 dark:bg-inherit" id="translation-selection">
       <div className="container">
         <div className='flex justify-center items-center'>
-          <p className='text-xl font-semibold bg-primary text-white px-5 py-2 rounded-l-md'>Translations</p>
+          <p className='text-xl font-semibold bg-primary text-white px-5 py-2 rounded-l-md'>{isSurah ? "Surah" : "Translations"}</p>
 
           <Select
             onValueChange={(value) => {
@@ -23,9 +23,20 @@ const TranslationSelect = ({value, onChange, translationsList = []}) => {
             </SelectTrigger>
             <SelectContent>
               {
-                translationsList.map((e, index) => (
+                (!isSurah && list.length > 0) &&
+                list.map((e, index) => (
                   <SelectItem value={e.identifier} className="capitalize font-semibold hover:!bg-emerald-500 hover:!text-white cursor-pointer" key={index}>
                     <span className='font-bold'>{index + 1} . </span>{e.name} <span className='font-medium'>({e.englishName}) : {e.language}</span>
+                  </SelectItem>
+                ))
+              }
+
+              {/* for surah list */}
+              {
+                (isSurah && list.length > 0) &&
+                list.map((e, index) => (
+                  <SelectItem value={e.number} className="capitalize font-semibold hover:!bg-emerald-500 hover:!text-white cursor-pointer" key={index}>
+                    <span className='font-bold'>{index + 1} . </span>{e.name} <span className='font-medium'>({e.englishName})</span>
                   </SelectItem>
                 ))
               }

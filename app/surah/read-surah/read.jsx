@@ -44,7 +44,7 @@ const Read = ({
         setCurrentTranslations([...currentTranslations, ...data.translations])
       }
       router.push(pageUrl, { scroll: false, shalow: true })
-      setPageOffset(newOffset)
+      setPageOffset(parseInt(newOffset))
 
       setLoading(false)
 
@@ -62,8 +62,8 @@ const Read = ({
     let languageChanged = laguageValue != lang
     if(languageChanged) {
       setLang(laguageValue)
-      let url = `/api/surah?number=${infoMap.number}&lang=${laguageValue}&offset=${1}&limit=${currentOffset * currentLimit}`
-      let pageUrl = `/surah/read-surah?number=${infoMap.number}&lang=${laguageValue}&offset=${1}&limit=${currentOffset * currentLimit}`
+      let url = `/api/surah?number=${infoMap.number}&lang=${laguageValue}&offset=1&limit=${currentOffset * currentLimit}`
+      let pageUrl = `/surah/read-surah?number=${infoMap.number}&lang=${laguageValue}&offset=1&limit=${currentOffset * currentLimit}`
 
       await fetchData(url, pageUrl, currentOffset, languageChanged)
       return
@@ -122,7 +122,7 @@ const Read = ({
       <TranslationSelect 
         value={lang}
         onChange={readMoreAndChangeLanguage}
-        translationsList={translationsList}
+        list={translationsList}
       />
 
       {/* show surah */}
@@ -131,7 +131,7 @@ const Read = ({
         currentTranslations={currentTranslations}
         numberOfAyahs={numberOfAyahs}
         pageOffset={pageOffset}
-        limit={limit}
+        limit={10}
         loading={loading}
         readMoreAndChangeLanguage={readMoreAndChangeLanguage}
         lang={lang}
