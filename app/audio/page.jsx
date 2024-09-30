@@ -3,6 +3,7 @@ import { randomBgImage } from "@/helpers/bgImage"
 import { dataFetcher } from "../api/dataFetcher"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
+import ScrollToTop from "@/components/ScrollToTop"
 
 const fetchReciterList = async () => {
   let result = await dataFetcher("http://api.alquran.cloud/v1/edition?format=audio&language=ar&type=versebyverse")
@@ -39,7 +40,7 @@ const Audio = async () => {
           <h3 className="title text-center text-primary !mb-10">Reciter list</h3>
 
           {/* display cards */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
             {
               reciterList != null && 
               reciterList.map((e, index) => (
@@ -50,8 +51,8 @@ const Audio = async () => {
                 >
                   <Card className="hover:border-transparent hover:shadow-xl transition-shadow duration-300">
                     <CardHeader className="text-center">
-                      <CardTitle className="text-xl font-arabic">{e.name}</CardTitle>
-                      <CardDescription className="text-[17px] font-medium">Shaykh {e.englishName}</CardDescription>
+                      <CardTitle className="text-3xl font-bold font-arabic">{e.name}</CardTitle>
+                      <CardDescription className="text-xl font-medium">Shaykh {e.englishName}</CardDescription>
                     </CardHeader>
                   </Card>
                 </Link>
@@ -60,6 +61,8 @@ const Audio = async () => {
           </div>
         </div>
       </section>
+
+      <ScrollToTop />
 
     </div>
   )
