@@ -2,7 +2,7 @@
 
 import PageHeader from '@/components/PageHeader'
 import { randomBgImage } from '@/helpers/bgImage'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -10,6 +10,8 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Calendar } from '@/components/ui/calendar'
+import { format, formatDate } from 'date-fns'
+import axios from 'axios'
 
 // zod form schema
 const formSchema = z.object({
@@ -22,10 +24,13 @@ const formSchema = z.object({
 })
 
 
-
 const CalendarPage = () => {
 
+  const [formattedDate, setFormattedDate] = useState(formatDate(new Date(), "dd-mm-yyyy"))
   const [date, setDate] = useState(new Date())
+  const [country, setCountry] = useState("Bangladesh")
+  const [city, setCity] = useState("Chittagong")
+  const [calendrData, setCalendarData] = useState(null)
 
   // react hook form declare with zod
   const form = useForm({
@@ -38,9 +43,22 @@ const CalendarPage = () => {
 
   // form submit
   const onSubmit = (values) => {
-    console.log(values)
+    setCity(values?.userCity)
+    setCountry(values?.userCountry)
   }
 
+  // get calendar data
+  const getCalendarData = async () => {
+    let result = await axios.get(`/api/calendar?date=${formattedDate}&city=${city}&country=${country}`)
+    if(result == null || result?.data == null) return alert("Could not get calendar data")
+    console.log(result?.data)
+    setCalendarData(result?.data)
+  }
+
+  // load calendar data when anything changes
+  useEffect(() => {
+    getCalendarData()
+  }, [formattedDate, country, city])
 
   const randomBg = useMemo(() => randomBgImage(), [])
 
@@ -113,8 +131,20 @@ const CalendarPage = () => {
               <Calendar
                 mode="single"
                 selected={date}
-                onSelect={setDate}
+                onSelect={(e) => {
+                  let validDate = new Date(e)
+
+                  if (isNaN(validDate.getTime())) {
+                    console.error('Invalid date')
+                    return
+                  }
+                  setFormattedDate(format(validDate, 'dd-MM-yyyy'))
+                  setDate(e)
+                }}
                 className="rounded-md border !w-full"
+                captionLayout="dropdown-buttons"
+                fromYear={1990}
+                toYear={2057}
               />
             </div>
 
