@@ -1,10 +1,12 @@
 "use client";
 import * as React from "react"
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
-import { DayPicker } from "react-day-picker"
+import { DayPicker, useDayPicker, useNavigation } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+import { format, setMonth } from "date-fns";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "./select";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 function Calendar({
   className,
@@ -12,6 +14,25 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }) {
+
+  // render select items
+  const selectItemRenderer = (itemArry, selectLabel) => {
+    return (
+      <>
+        <SelectTrigger>{selectLabel}</SelectTrigger>
+        <SelectContent>
+          {
+            itemArry.map((e, index) => (
+              <SelectItem className="capitalize hover:!bg-emerald-500 hover:!text-white cursor-pointer" value={e.value} key={index}>
+                {e.label}
+              </SelectItem>
+            ))
+          }
+        </SelectContent>
+      </>
+    )
+  }
+
   return (
     (<DayPicker
       showOutsideDays={showOutsideDays}
@@ -20,11 +41,11 @@ function Calendar({
         months: "flex flex-col w-full font-medium",
         month: "space-y-4",
         caption: "flex justify-center pt-1 relative items-center",
-        caption_label: "text-xl font-medium",
+        caption_label: "text-xl font-medium hidden",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+          "h-7 w-7 bg-primary text-white p-0 opacity-50 hover:opacity-100 rounded-md hover:bg-primary hover:text-white"
         ),
         nav_button_previous: "absolute left-1",
         nav_button_next: "absolute right-1",
@@ -47,18 +68,70 @@ function Calendar({
         day_range_end: "day-range-end",
         day_selected:
           "bg-blue-700 text-primary-foreground hover:bg-blue-700 hover:text-primary-foreground focus:bg-blue-700 focus:text-primary-foreground",
-        day_today: "bg-primary text-white hover:bg-primary hover:text-white",
+        day_today: "!bg-primary text-white hover:!bg-primary hover:text-white",
         day_outside:
           "day-outside text-muted-foreground opacity-50  aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
         day_hidden: "invisible",
+        caption_dropdowns: "flex gap-1",
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeftIcon className="h-4 w-4" />,
-        IconRight: ({ ...props }) => <ChevronRightIcon className="h-4 w-4" />,
+        IconLeft: ({ ...props }) => <ArrowLeft className="h-4 w-4" />,
+        IconRight: ({ ...props }) => <ArrowRight className="h-4 w-4" />,
+        Dropdown: (props) => {
+
+          const {fromDate, fromMonth, fromYear, toDate, toMonth, toYear} = useDayPicker()
+          const {goToMonth, currentMonth} = useNavigation()
+
+          if(props?.name == "months"){
+            const months = Array.from({length: 12}, (_, i) => ({
+              value: i.toString(),
+              label: format(setMonth(new Date(), i), "MMMM")
+            }))
+            
+            return (
+              <Select
+                onValueChange={(e) => {
+                  let newDate = new Date(currentMonth)
+                  newDate.setMonth(parseInt(e))
+                  goToMonth(newDate)
+                }}
+                value={props.value?.toString()}
+              >
+                {selectItemRenderer(months, format(currentMonth, "MMMM"))}
+              </Select>
+            )
+
+          }else{
+            const pastYears = fromYear || fromDate.getFullYear() || fromMonth.getFullYear()
+            const latestYear = toYear || toDate.getFullYear() || toMonth.getFullYear()
+            let years = []
+            
+            if(!pastYears && !latestYear) return
+
+            const yearGap = latestYear - pastYears + 1
+            years = Array.from({ length: yearGap }, (_, i) => ({
+              value: (pastYears + i).toString(),
+              label: (pastYears + i).toString(),
+            }))
+
+            return (
+              <Select
+                onValueChange={(e) => {
+                  let newDate = new Date(currentMonth)
+                  newDate.setFullYear(parseInt(e))
+                  goToMonth(newDate)
+                }}
+                value={props.value?.toString()}
+              >
+                {selectItemRenderer(years, currentMonth.getFullYear())}
+              </Select>
+            )
+          }
+        }
       }}
       {...props} />)
   );
