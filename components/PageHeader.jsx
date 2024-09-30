@@ -7,7 +7,7 @@ const PageHeader = ({ headline, bgImage, breadCrumbList = []}) => {
 
   return (
     <section 
-      className='page-header w-full h-[50vh]'
+      className='page-header w-full h-[60vh]'
       style={{
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${backgroundImage})`,
         backgroundSize: "cover",

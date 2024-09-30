@@ -16,6 +16,7 @@ import 'react-h5-audio-player/lib/styles.css'
 const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
 
   const [surahNum, setSurahNum] = useState(1)
+  const [surah, setSurah] = useState([])
   const [audio, setAudio] = useState([])
   const [surahInfo, setSurahInfo] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -28,12 +29,16 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
   useEffect(() => {
     (async () => {
       setLoading(false)
-      let result = await axios.get(`/api/get-surah?number=${surahNum}&identifier=${identifier}`)
-      if(result != null && result?.data == null) return alert("Could not fetch surah audio")
+      let [surah, audio] = await Promise.all([
+        axios.get(`/api/get-surah?number=${surahNum}`),
+        axios.get(`/api/get-surah/audio?number=${surahNum}&edition=${identifier}`)
+      ])
+      if(surah == null || surah?.data == null || audio == null || audio?.data == null) return alert("Could not fetch surah audio")
+      let { ayahs, englishName, englishNameTranslation, name, number, numberOfAyahs, revelationType } = surah.data
+      setSurah(ayahs)
       setCurrentAyah(0)
-      let { ayahs, englishName, englishNameTranslation, name, number, numberOfAyahs, revelationType } = result.data
-      setAudio(ayahs)
       setSurahInfo({ name, englishName, englishNameTranslation, number, numberOfAyahs, revelationType })
+      setAudio(audio.data?.ayahs)
     })()
   }, [surahNum])
 
@@ -125,66 +130,63 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
 
             <div className="surah-audio-player">
               <h3 className='title text-primary'>Surah audio</h3>
-              {audio.length > 0 && (
-                <div>
-                  <div className='ayah-texts h-auto w-full mb-4'>
-                    <ScrollArea className="wrapper max-h-[400px] lg:max-h-[300px] w-full border rounded-md px-3 pt-3 overflow-y-scroll overflow-x-hidden">
-                      <h3 className='title text-center text-primary font-arabic font-bold'>بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</h3>
 
-                      {
-                        audio.map((e, index) => (
-                          <Card className={`hover:border-transparent dark:border-gray-400 hover:shadow-xl transition-shadow duration-300 mb-4 ${e.numberInSurah - 1 == currentAyah && "bg-primary"}`} key={index}>
+              <div className='ayah-texts h-auto w-full mb-4'>
+                <ScrollArea className="wrapper max-h-[400px] lg:max-h-[300px] w-full border rounded-md px-3 pt-3 overflow-y-scroll overflow-x-hidden">
+                  <h3 className='title text-center text-primary font-arabic font-bold'>بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</h3>
 
-                            <CardHeader className='px-4 pb-2 pt-3'>
-                              <CardTitle className={"p-3 bg-primary text-white rounded-md w-fit max-h-11 border-2 border-white text-center"}>
-                                {e.numberInSurah}
-                              </CardTitle>
-                            </CardHeader>
+                  {
+                    (surah != null && surah.length > 0) &&
+                    surah.map((e, index) => (
+                      <Card className={`hover:border-transparent dark:border-gray-400 hover:shadow-xl transition-shadow duration-300 mb-4 ${e.numberInSurah - 1 == currentAyah && "bg-primary"}`} key={index}>
+                        <CardHeader className='px-4 pb-2 pt-3'>
+                          <CardTitle className={"p-3 bg-primary text-white rounded-md w-fit max-h-11 border-2 border-white text-center"}>
+                            {e.numberInSurah}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="!px-4 pb-3">
+                          <p className={`font-arabic text-3xl font-bold text-end leading-loose tracking-wide ${e.numberInSurah - 1 == currentAyah && "text-white"}`}>{e.text}</p>
+                        </CardContent>
+                      </Card>
+                    ))
+                  }
+                </ScrollArea>
+              </div>
 
-                            <CardContent className="!px-4 pb-3">
-                              <p className={`font-arabic text-2xl font-bold text-end leading-loose tracking-wide ${e.numberInSurah - 1 == currentAyah && "text-white"}`}>{e.text}</p>
-                            </CardContent>
-
-                          </Card>
-                        ))
-                      }
-                    </ScrollArea>
-                  </div>
-
-
-                  {/* customized react-h5 audio player */}
-                  <AudioPlayer
-                    ref={audioRef}
-                    autoPlay
-                    src={audio[currentAyah].audio}
-                    onPlay={e => {
-                      audioRef.current.audio.current.currentTime = 0
-                    }}
-                    onEnded={() => {
-                      if (currentAyah == surahInfo?.numberOfAyahs - 1) {
-                        if (surahNum < 114) return setSurahNum(prev => prev + 1)
-                        return setSurahNum(1)
-                      }
-                      setCurrentAyah(prev => prev + 1)
-                    }}
-                    onClickNext={nextAyah}
-                    onClickPrevious={prevAyah}
-                    showJumpControls={false}
-                    showSkipControls={true}
-                    showFilledVolume={true}
-                    loop={false}
-                    layout='horizontal'
-                    customIcons={{
-                      previous: <SkipBack className='text-white' />,
-                      next: <SkipForward className='text-white' />,
-                      play: <Play className='text-white' />,
-                      pause: <Pause className='text-white' />,
-                      volume: <Volume2 className='text-white' />,
-                      volumeMute: <VolumeX className='text-white' />
-                    }}
-                  />
-                </div>
-              )}
+              {/* customized react-h5 audio player */}
+              {
+                (audio != null && audio.length > 0) &&
+                <AudioPlayer
+                  ref={audioRef}
+                  autoPlay
+                  src={audio[currentAyah]?.audio}
+                  onPlay={e => {
+                    audioRef.current.audio.current.currentTime = 0
+                  }}
+                  onEnded={() => {
+                    if (currentAyah == surahInfo?.numberOfAyahs - 1) {
+                      if (surahNum < 114) return setSurahNum(prev => prev + 1)
+                      return setSurahNum(1)
+                    }
+                    setCurrentAyah(prev => prev + 1)
+                  }}
+                  onClickNext={nextAyah}
+                  onClickPrevious={prevAyah}
+                  showJumpControls={false}
+                  showSkipControls={true}
+                  showFilledVolume={true}
+                  loop={false}
+                  layout='horizontal'
+                  customIcons={{
+                    previous: <SkipBack className='text-white' />,
+                    next: <SkipForward className='text-white' />,
+                    play: <Play className='text-white' />,
+                    pause: <Pause className='text-white' />,
+                    volume: <Volume2 className='text-white' />,
+                    volumeMute: <VolumeX className='text-white' />
+                  }}
+                />
+              }
             </div>
 
           </div>
