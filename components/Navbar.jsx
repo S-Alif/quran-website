@@ -88,7 +88,7 @@ function Navbar() {
               <Link href="/audio">Audio</Link>
             </li>
             <li className={navLinkList}>
-              <Link href="">Calendar</Link>
+              <Link href="/calendar">Calendar</Link>
             </li>
           </ul>
 
