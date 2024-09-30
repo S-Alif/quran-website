@@ -1,0 +1,45 @@
+/* custom design for react h5 audio player */
+
+/* container */
+.rhap_container{
+  @apply !bg-primary;
+  @apply rounded-md;
+}
+
+/* change time colors */
+.rhap_time{
+  @apply !text-white;
+  @apply !font-poppins;
+  @apply !font-medium;
+}
+
+/* repeat button */
+.rhap_repeat-button{
+  @apply !hidden;
+}
+
+/* progress bar */
+.rhap_progress-bar{
+  @apply !bg-gray-100;
+  @apply !rounded-full;
+}
+.rhap_download-progress{
+  @apply !bg-slate-300;
+}
+.rhap_progress-filled, .rhap_volume-filled{ /* same styles for volume and progress filled*/
+  @apply !bg-white;
+}
+.rhap_progress-indicator, .rhap_volume-indicator{ /* same styles for volume and progress indicator*/
+  @apply !bg-primary;
+  @apply border-2;
+  @apply border-white;
+  @apply !rounded-full;
+}
+
+/* volume bar */
+.rhap_volume-bar{
+  @apply !rounded-full;
+}
+.rhap_volume-indicator{
+  @apply !z-10;
+}

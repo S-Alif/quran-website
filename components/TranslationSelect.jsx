@@ -4,11 +4,9 @@ import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '.
 const TranslationSelect = ({value, onChange, list = [], isSurah = false}) => {
 
   const [language, setLanguage] = useState(value || isSurah ? 1 : "en.asad")
-
-  console.log(value)
+  
   useEffect(() => {
     setLanguage(value)
-    console.log(value)
   }, [value])
 
   return (
@@ -29,7 +27,7 @@ const TranslationSelect = ({value, onChange, list = [], isSurah = false}) => {
             </SelectTrigger>
             <SelectContent>
               {
-                (!isSurah && list.length > 0) &&
+                (!isSurah && list != null && list.length > 0) &&
                 list.map((e, index) => (
                   <SelectItem value={e.identifier} className="capitalize font-semibold hover:!bg-emerald-500 hover:!text-white cursor-pointer" key={index}>
                     <span className='font-bold'>{index + 1} . </span>{e.name} <span className='font-medium'>({e.englishName}) : {e.language}</span>
@@ -39,7 +37,7 @@ const TranslationSelect = ({value, onChange, list = [], isSurah = false}) => {
 
               {/* for surah list */}
               {
-                (isSurah && list.length > 0) &&
+                (isSurah && list != null && list.length > 0) &&
                 list.map((e, index) => (
                   <SelectItem value={e.number} className="capitalize font-semibold hover:!bg-emerald-500 hover:!text-white cursor-pointer" key={index}>
                     <span className='font-bold'>{index + 1} . </span>{e.name} <span className='font-medium'>({e.englishName})</span>

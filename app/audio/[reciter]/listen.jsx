@@ -3,9 +3,15 @@
 import PageHeader from '@/components/PageHeader'
 import SurahInfoCard from '@/components/SurahInfoCard'
 import TranslationSelect from '@/components/TranslationSelect'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { randomBgImage } from '@/helpers/bgImage'
 import axios from 'axios'
-import React, { useEffect, useRef, useState } from 'react'
+import { Pause, Play, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import AudioPlayer from 'react-h5-audio-player'
+import 'react-h5-audio-player/lib/styles.css'
+
 
 const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
 
@@ -15,6 +21,7 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
   const [loading, setLoading] = useState(false)
   const [currentAyah, setCurrentAyah] = useState(0)
 
+  // audio ref to control audio element
   const audioRef = useRef()
 
   // load audio
@@ -22,7 +29,7 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
     (async () => {
       setLoading(false)
       let result = await axios.get(`/api/get-surah?number=${surahNum}&identifier=${identifier}`)
-      if(result == null) return alert("Could not fetch surah audio")
+      if(result != null && result?.data == null) return alert("Could not fetch surah audio")
       setCurrentAyah(0)
       let { ayahs, englishName, englishNameTranslation, name, number, numberOfAyahs, revelationType } = result.data
       setAudio(ayahs)
@@ -31,24 +38,21 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
   }, [surahNum])
 
 
+  // go to next ayah
   const nextAyah = () => {
     if (currentAyah < audio.length - 1) {
       setCurrentAyah(currentAyah + 1)
     }
   }
-
+  
+  // go to previous ayah
   const prevAyah = () => {
     if (currentAyah > 0) {
       setCurrentAyah(currentAyah - 1)
     }
   }
 
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.load()
-      audioRef.current.play()
-    }
-  }, [currentAyah])
+  const randomBg = useMemo(() => randomBgImage(), [])
 
 
   return (
@@ -57,7 +61,7 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
       {/* page header */}
       <PageHeader
         headline={"Surah recitation by Shaykh " + reciterInfo?.englishName}
-        bgImage={randomBgImage()}
+        bgImage={randomBg}
         breadCrumbList={[
           {
             title: "Home",
@@ -104,9 +108,9 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
       {/* surah audio */}
       <section className="surah-audio section" id="surah-audio">
         <div className="container">
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-5">
 
-            <div className="surah-info order-2 lg:order-2">
+            <div className="surah-info">
               <h3 className='title text-primary'>Surah information</h3>
 
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-3'>
@@ -119,32 +123,66 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
               </div>
             </div>
 
-            <div className="surah-audio-player order-1 lg:order-2">
+            <div className="surah-audio-player">
+              <h3 className='title text-primary'>Surah audio</h3>
               {audio.length > 0 && (
                 <div>
-                  <h4 className="text-primary">Ayah {currentAyah + 1}: {audio[currentAyah].text}</h4>
-                  <audio
+                  <div className='ayah-texts h-auto w-full mb-4'>
+                    <ScrollArea className="wrapper max-h-[400px] lg:max-h-[300px] w-full border rounded-md px-3 pt-3 overflow-y-scroll overflow-x-hidden">
+                      <h3 className='title text-center text-primary font-arabic font-bold'>بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</h3>
+
+                      {
+                        audio.map((e, index) => (
+                          <Card className={`hover:border-transparent dark:border-gray-400 hover:shadow-xl transition-shadow duration-300 mb-4 ${e.numberInSurah - 1 == currentAyah && "bg-primary"}`} key={index}>
+
+                            <CardHeader className='px-4 pb-2 pt-3'>
+                              <CardTitle className={"p-3 bg-primary text-white rounded-md w-fit max-h-11 border-2 border-white text-center"}>
+                                {e.numberInSurah}
+                              </CardTitle>
+                            </CardHeader>
+
+                            <CardContent className="!px-4 pb-3">
+                              <p className={`font-arabic text-2xl font-bold text-end leading-loose tracking-wide ${e.numberInSurah - 1 == currentAyah && "text-white"}`}>{e.text}</p>
+                            </CardContent>
+
+                          </Card>
+                        ))
+                      }
+                    </ScrollArea>
+                  </div>
+
+
+                  {/* customized react-h5 audio player */}
+                  <AudioPlayer
                     ref={audioRef}
-                    controls
+                    autoPlay
+                    src={audio[currentAyah].audio}
+                    onPlay={e => {
+                      audioRef.current.audio.current.currentTime = 0
+                    }}
                     onEnded={() => {
-                      if (currentAyah == surahInfo?.numberOfAyahs - 1){
-                        if(surahNum < 114) return setSurahNum(prev => prev + 1)
+                      if (currentAyah == surahInfo?.numberOfAyahs - 1) {
+                        if (surahNum < 114) return setSurahNum(prev => prev + 1)
                         return setSurahNum(1)
                       }
                       setCurrentAyah(prev => prev + 1)
-                    }} 
-                  >
-                    <source src={audio[currentAyah].audio} type="audio/mp3" />
-                    Your browser does not support the audio element.
-                  </audio>
-                  <div className="audio-controls">
-                    <button onClick={prevAyah} disabled={currentAyah === 0}>
-                      Previous
-                    </button>
-                    <button onClick={nextAyah} disabled={currentAyah === audio.length - 1}>
-                      Next
-                    </button>
-                  </div>
+                    }}
+                    onClickNext={nextAyah}
+                    onClickPrevious={prevAyah}
+                    showJumpControls={false}
+                    showSkipControls={true}
+                    showFilledVolume={true}
+                    loop={false}
+                    layout='horizontal'
+                    customIcons={{
+                      previous: <SkipBack className='text-white' />,
+                      next: <SkipForward className='text-white' />,
+                      play: <Play className='text-white' />,
+                      pause: <Pause className='text-white' />,
+                      volume: <Volume2 className='text-white' />,
+                      volumeMute: <VolumeX className='text-white' />
+                    }}
+                  />
                 </div>
               )}
             </div>
@@ -152,7 +190,6 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
           </div>
         </div>
       </section>
-
       
 
     </div>
