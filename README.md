@@ -1,6 +1,6 @@
 # Qur'An website
 
-A website where anyone can read and listen to the holy Qur'An.
+A website where anyone can read and listen to the holy Qur'An. See the [demo](https://al-quran-webapp.vercel.app)
 
 ### Technology used
 <hr>
