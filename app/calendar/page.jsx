@@ -191,7 +191,7 @@ const CalendarPage = () => {
       </section>
 
       {/* show dates */}
-      <section className="show-calendar-dates section bg-gray-100 dark:bg-inherit" id="show-calendar-data">
+      <section className="show-calendar-dates section bg-gray-100 dark:bg-zinc-900" id="show-calendar-data">
         <div className="container">
 
           <h3 className='title text-center text-primary'>Date</h3>
@@ -264,7 +264,7 @@ const CalendarPage = () => {
       </section>
 
       {/* show important times */}
-      <section className="show-important-times section bg-gray-100 dark:bg-inherit" id="show-important-times">
+      <section className="show-important-times section bg-gray-100 dark:bg-zinc-900" id="show-important-times">
         <div className="container">
 
           <h3 className='title text-center text-primary'>Other important times</h3>

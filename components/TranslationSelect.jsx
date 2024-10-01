@@ -10,7 +10,7 @@ const TranslationSelect = ({value, onChange, list = [], isSurah = false}) => {
   }, [value])
 
   return (
-    <section className="translaiton-selection section bg-gray-100 dark:bg-inherit" id="translation-selection">
+    <section className="translaiton-selection section bg-gray-100 dark:bg-zinc-900" id="translation-selection">
       <div className="container">
         <div className='flex justify-center items-center'>
           <p className='text-xl font-semibold bg-primary text-white px-5 py-2 rounded-l-md'>{isSurah ? "Surah" : "Translations"}</p>
