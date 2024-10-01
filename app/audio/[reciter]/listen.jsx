@@ -24,6 +24,8 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
 
   // audio ref to control audio element
   const audioRef = useRef()
+  const ayahScrollRef = useRef(null)
+  const ayahRefs = useRef([])
 
   // load audio
   useEffect(() => {
@@ -58,6 +60,23 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
   }
 
   const randomBg = useMemo(() => randomBgImage(), [])
+
+  // scroll to the ayahs that is playing
+  useEffect(() => {
+    if (surah.length == 0 || audio.length == 0) return
+    const currentAyahElement = ayahRefs.current[currentAyah]
+    const scrollArea = ayahScrollRef.current
+
+    if (currentAyahElement && scrollArea) {
+      let ayahPosition = currentAyahElement.offsetTop
+      scrollArea.scrollTo({
+        top: ayahPosition - 100,
+        behavior: 'smooth',
+        duration: 500
+      })
+    }
+
+  }, [currentAyah])
 
 
   return (
@@ -132,20 +151,27 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
               <h3 className='title text-primary'>Surah audio</h3>
 
               <div className='ayah-texts h-auto w-full mb-4'>
-                <ScrollArea className="wrapper max-h-[400px] lg:max-h-[300px] w-full border rounded-md px-3 pt-3 overflow-y-scroll overflow-x-hidden">
+                <ScrollArea 
+                  className="wrapper max-h-[400px] lg:max-h-[300px] w-full border rounded-md px-3 pt-3 overflow-y-scroll overflow-x-hidden"
+                  ref={ayahScrollRef}
+                >
                   <h3 className='title text-center text-primary font-arabic font-bold'>بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</h3>
 
                   {
                     (surah != null && surah.length > 0) &&
                     surah.map((e, index) => (
-                      <Card className={`hover:border-transparent dark:border-gray-400 hover:shadow-xl transition-shadow duration-300 mb-4 ${e.numberInSurah - 1 == currentAyah && "bg-primary"}`} key={index}>
+                      <Card 
+                        className={`hover:border-transparent dark:border-gray-400 hover:shadow-xl transition-shadow duration-300 mb-4 ${e.numberInSurah - 1 == currentAyah && "bg-primary"}`} 
+                        key={index}
+                        ref={el => ayahRefs.current[index] = el}
+                      >
                         <CardHeader className='px-4 pb-2 pt-3'>
                           <CardTitle className={"p-3 bg-primary text-white rounded-md w-fit max-h-11 border-2 border-white text-center"}>
                             {e.numberInSurah}
                           </CardTitle>
                         </CardHeader>
                         <CardContent className="!px-4 pb-3">
-                          <p className={`font-arabic text-3xl font-bold text-end leading-loose tracking-wide ${e.numberInSurah - 1 == currentAyah && "text-white"}`}>{e.text}</p>
+                          <p className={`font-arabic text-3xl font-bold text-end leading-normal  ${e.numberInSurah - 1 == currentAyah && "text-white"}`}>{e.text}</p>
                         </CardContent>
                       </Card>
                     ))

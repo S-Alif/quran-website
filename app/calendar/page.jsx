@@ -15,6 +15,7 @@ import axios from 'axios'
 import SurahInfoCard from '@/components/SurahInfoCard'
 import CardLoader from '@/components/CardLoader'
 import { formatInTimeZone } from 'date-fns-tz'
+import ScrollToTop from '@/components/ScrollToTop'
 
 // zod form schema
 const formSchema = z.object({
@@ -291,6 +292,8 @@ const CalendarPage = () => {
           </div>
         </div>
       </section>
+
+      <ScrollToTop />
 
     </div>
   )
