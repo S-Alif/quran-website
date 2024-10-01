@@ -3,6 +3,11 @@ import ScrollToTop from "@/components/ScrollToTop"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 
+export const metadata = {
+  title: "Juz list",
+  description: "A list of all juz",
+}
+
 const JuzPage = async () => {
 
   const data = Array.from({ length: 30 }, (_, i) => i + 1)

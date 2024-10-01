@@ -3,6 +3,14 @@ import { ThemeProvider } from "next-themes";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
+export const metadata = {
+  title: "Qur\'An Web",
+  description: "Qur\'An Web, a place where everyone can read and listen to Qur\'An",
+  icons: {
+    icon: "/images/QuranApp-logo-green.png",
+  },
+}
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

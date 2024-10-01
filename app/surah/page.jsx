@@ -4,7 +4,10 @@ import PageHeader from "@/components/PageHeader"
 import ScrollToTop from "@/components/ScrollToTop"
 import SurahListCard from "@/components/SurahListCard"
 
-
+export const metadata = {
+  title: "Sura List",
+  description: "List of all surah in the Qur\'An",
+}
 
 const SurahPage = async () => {
 

@@ -3,6 +3,11 @@ import endpoints from '@/app/api/endpoints'
 import React from 'react'
 import Read from './read'
 
+export const metadata = {
+  title: "Read Surah",
+  description: "Read the surah from the Qur\'An",
+}
+
 // fetch surah
 const fetchSurah = async (num, language, offset, limit) => {
   const edition = 'quran-unicode'

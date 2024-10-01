@@ -5,6 +5,11 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import Link from "next/link"
 import ScrollToTop from "@/components/ScrollToTop"
 
+export const metadata = {
+  title: "Qur\'An reciter list",
+  description: "List of Qur\'An reciters",
+}
+
 const fetchReciterList = async () => {
   let result = await dataFetcher("http://api.alquran.cloud/v1/edition?format=audio&language=ar&type=versebyverse")
   return result
