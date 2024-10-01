@@ -1,6 +1,7 @@
 import PageHeader from "@/components/PageHeader"
 import ScrollToTop from "@/components/ScrollToTop"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { randomBgImage } from "@/helpers/bgImage"
 import Link from "next/link"
 
 export const metadata = {
@@ -18,7 +19,7 @@ const JuzPage = async () => {
       {/* page header */}
       <PageHeader
         headline={"See the list of Juz"}
-        bgImage={"https://plus.unsplash.com/premium_photo-1677587536653-0d02efbb70ee?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+        bgImage={randomBgImage()}
         breadCrumbList={[
           {
             title: "Home",
