@@ -24,7 +24,7 @@ export default function Home() {
       >
         <div className="container h-full flex justify-center items-center flex-col">
           <h3 className="text-white font-semibold text-3xl">Brothers and Sisters</h3>
-          <h1 className="text-white font-bold text-6xl pt-2 pb-3">Assalamu Alaikum</h1>
+          <h1 className="text-white font-bold text-6xl pt-2 pb-3 text-center">Assalamu Alaikum</h1>
           <p className="text-xl font-medium text-white text-center">Read Qur'An and get closer to almighty <span className="text-emerald-400 font-bold">ALLAH</span></p>
         </div>
       </section>
@@ -46,7 +46,7 @@ export default function Home() {
             
             <div className="text-wrap md:w-1/2 flex flex-col justify-center">
               <div className="text h-fit">
-                <h3 className="title text-primary">What is Qur'An</h3>
+                <h3 className="title text-primary text-center md:text-start">What is Qur'An</h3>
 
                 <p className="text-pretty pb-2 pt-5 w-full">The Quran is the holy book which Muslims recite and turn to for guidance in all aspects of their life.</p>
                 <p className="text-pretty w-full pb-5">It is the last testament in a series of divine revelations from ALLAH. It comprises the unaltered and direct words of ALLAH, revealed through the Angel Gibrael, to the final Prophet, Muhammad (peace be upon him) some 1400 years ago.</p>

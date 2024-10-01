@@ -73,7 +73,6 @@ function Navbar() {
                 width={30}
                 height={30}
                 alt='Quran Web'
-                className='w-auto h-auto'
               />
 
               <h3 className='font-bold text-xl text-slate-50'>Qur'An Web</h3>
@@ -132,31 +131,31 @@ function Navbar() {
         <ul className='list-none h-full flex flex-row justify-around items-center'>
           <li className={`${bottomNavLinkList} ${pathname == '/' && "navItem-active"}`}>
             <Link href="/" className={`text-center text-sm`}>
-              <i class="fa-solid fa-house"></i>
+              <i className="fa-solid fa-house"></i>
               <p>Home</p>
             </Link>
           </li>
           <li className={`${bottomNavLinkList} ${pathname.includes("/surah") && "navItem-active"}`}>
             <Link href="/surah" className={`text-center text-sm`}>
-              <i class="fa-solid fa-book-open"></i>
+              <i className="fa-solid fa-book-open"></i>
               <p>Surah</p>
             </Link>
           </li>
           <li className={`${bottomNavLinkList} ${pathname.includes("/juz") && "navItem-active"}`}>
             <Link href="/juz" className={`text-center text-sm`}>
-              <i class="fa-solid fa-book-open-reader"></i>
+              <i className="fa-solid fa-book-open-reader"></i>
               <p className='text-sm'>Juz</p>
             </Link>
           </li>
           <li className={`${bottomNavLinkList} ${pathname.includes("/audio") && "navItem-active"}`}>
             <Link href="/audio" className={`text-center text-sm`}>
-              <i class="fa-solid fa-play"></i>
+              <i className="fa-solid fa-play"></i>
               <p>Audio</p>
             </Link>
           </li>
           <li className={`${bottomNavLinkList} ${pathname.includes("/calendar") && "navItem-active"}`}>
             <Link href="/calendar" className={`text-center text-sm`}>
-              <i class="fa-solid fa-calendar-days"></i>
+              <i className="fa-solid fa-calendar-days"></i>
               <p>Calendar</p>
             </Link>
           </li>

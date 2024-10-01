@@ -135,9 +135,9 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-5">
 
             <div className="surah-info">
-              <h3 className='title text-primary'>Surah information</h3>
+              <h3 className='title text-primary text-center md:text-start'>Surah information</h3>
 
-              <div className='grid grid-cols-1 lg:grid-cols-2 gap-3'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
                 {
                   surahInfo != null &&
                   Object.keys(surahInfo).map((e, index) => (
@@ -148,7 +148,7 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
             </div>
 
             <div className="surah-audio-player">
-              <h3 className='title text-primary'>Surah audio</h3>
+              <h3 className='title text-primary text-center md:text-start'>Surah audio</h3>
 
               <div className='ayah-texts h-auto w-full mb-4'>
                 <ScrollArea 

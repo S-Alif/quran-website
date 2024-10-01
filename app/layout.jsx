@@ -24,11 +24,12 @@ export default function RootLayout({ children }) {
           <NextTopLoader
             color="#f25518"
             initialPosition={0.10}
-            height={2}
+            height={3}
             showSpinner={false}
             easing="ease"
             speed={200}
-            shadow="0 0 10px #2299DD,0 0 5px #2299DD"
+            shadow="0 0 10px #fff,0 0 5px #fff"
+            zIndex={100003}
           />
 
           <MainLayout>

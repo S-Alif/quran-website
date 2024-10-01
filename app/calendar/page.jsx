@@ -126,7 +126,7 @@ const CalendarPage = () => {
 
             {/* location form */}
             <div className="location-form-wrapper">
-              <h3 className='title text-primary'>Set your location</h3>
+              <h3 className='title text-primary text-center md:text-start'>Set your location</h3>
 
               <div className="location-form mt-2">
                 <Form {...form}>
