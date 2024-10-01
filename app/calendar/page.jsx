@@ -14,6 +14,7 @@ import { format, formatDate } from 'date-fns'
 import axios from 'axios'
 import SurahInfoCard from '@/components/SurahInfoCard'
 import CardLoader from '@/components/CardLoader'
+import { formatInTimeZone } from 'date-fns-tz'
 
 // zod form schema
 const formSchema = z.object({
@@ -80,6 +81,7 @@ const CalendarPage = () => {
 
   const randomBg = useMemo(() => randomBgImage(), [])
 
+  // loader renderer
   const renderLoader = () => {
     return(
       <>
@@ -88,6 +90,13 @@ const CalendarPage = () => {
         <CardLoader />
       </>
     )
+  }
+
+  // time converter
+  const convertToTimezone = (timeStr, timezone) => {
+    const [hours, minutes] = timeStr.split(':').map(Number)
+    const dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes)
+    return formatInTimeZone(dateTime, timezone, "hh:mm a")
   }
 
   return (
@@ -240,7 +249,7 @@ const CalendarPage = () => {
               Object.keys(prayerTimes).map((e, index) => (
                 <SurahInfoCard 
                   label={e}
-                  infoValue={prayerTimes[e]}
+                  infoValue={convertToTimezone(prayerTimes[e], calendrData?.meta?.timezone)}
                   key={index}
                 />
               ))
@@ -270,7 +279,7 @@ const CalendarPage = () => {
                 return(
                   <SurahInfoCard
                     label={label}
-                    infoValue={importantTimes[e]}
+                    infoValue={convertToTimezone(importantTimes[e], calendrData?.meta?.timezone)}
                     key={index}
                   />
                 )
