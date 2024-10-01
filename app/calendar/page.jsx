@@ -194,7 +194,7 @@ const CalendarPage = () => {
         <div className="container">
 
           <h3 className='title text-center text-primary'>Date</h3>
-          <div className="dates grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+          <div className="dates grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
 
             {
               (!loading && calendrData != null) &&
@@ -243,7 +243,7 @@ const CalendarPage = () => {
         <div className="container">
           <h3 className='title text-center text-primary'>Prayer times</h3>
 
-          <div className="prayer-times grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+          <div className="prayer-times grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
             {
               (!loading && prayerTimes != null) &&
               Object.keys(prayerTimes).map((e, index) => (
@@ -267,7 +267,7 @@ const CalendarPage = () => {
         <div className="container">
 
           <h3 className='title text-center text-primary'>Other important times</h3>
-          <div className="important-times grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+          <div className="important-times grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
             {
               (!loading && importantTimes != null) &&
               Object.keys(importantTimes).map((e, index) => {

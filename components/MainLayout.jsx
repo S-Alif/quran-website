@@ -1,5 +1,6 @@
 'use client'
 
+import Footer from './Footer'
 import Navbar from './Navbar'
 
 function MainLayout({children}) {
@@ -9,6 +10,7 @@ function MainLayout({children}) {
       <main>
         {children}
       </main>
+      <Footer />
     </div>
   )
 }
