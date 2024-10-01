@@ -21,11 +21,16 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
   const [surahInfo, setSurahInfo] = useState(null)
   const [loading, setLoading] = useState(false)
   const [currentAyah, setCurrentAyah] = useState(0)
+  const [screenWidth, setScreenWidth] = useState(768)
 
   // audio ref to control audio element
   const audioRef = useRef()
   const ayahScrollRef = useRef(null)
   const ayahRefs = useRef([])
+
+  useEffect(() => {
+    setScreenWidth(window.innerWidth)
+  }, [window.innerWidth])
 
   // load audio
   useEffect(() => {
@@ -202,7 +207,7 @@ const Listen = ({ surahList, reciterInfo, identifier = 'ar.alafasy'}) => {
                   showSkipControls={true}
                   showFilledVolume={true}
                   loop={false}
-                  layout='horizontal'
+                  layout={screenWidth > 768 ? "horizontal" : "stacked"}
                   customIcons={{
                     previous: <SkipBack className='text-white' />,
                     next: <SkipForward className='text-white' />,
