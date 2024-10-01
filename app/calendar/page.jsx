@@ -12,6 +12,8 @@ import { Input } from '@/components/ui/input'
 import { Calendar } from '@/components/ui/calendar'
 import { format, formatDate } from 'date-fns'
 import axios from 'axios'
+import SurahInfoCard from '@/components/SurahInfoCard'
+import CardLoader from '@/components/CardLoader'
 
 // zod form schema
 const formSchema = z.object({
@@ -26,11 +28,14 @@ const formSchema = z.object({
 
 const CalendarPage = () => {
 
-  const [formattedDate, setFormattedDate] = useState(formatDate(new Date(), "dd-mm-yyyy"))
-  const [date, setDate] = useState(new Date())
+  const [formattedDate, setFormattedDate] = useState("")
+  const [date, setDate] = useState()
   const [country, setCountry] = useState("Bangladesh")
   const [city, setCity] = useState("Chittagong")
   const [calendrData, setCalendarData] = useState(null)
+  const [prayerTimes, setPrayerTimes] = useState(null)
+  const [importantTimes, setImportantTimes] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   // react hook form declare with zod
   const form = useForm({
@@ -49,18 +54,41 @@ const CalendarPage = () => {
 
   // get calendar data
   const getCalendarData = async () => {
+    setLoading(true)
     let result = await axios.get(`/api/calendar?date=${formattedDate}&city=${city}&country=${country}`)
     if(result == null || result?.data == null) return alert("Could not get calendar data")
-    console.log(result?.data)
     setCalendarData(result?.data)
+
+    let { Fajr, Sunrise, Dhuhr, Asr, Sunset, Maghrib, Isha, Imsak, Midnight, Firstthird, Lastthird } = result?.data?.timings
+
+    setPrayerTimes({Fajr, Dhuhr, Asr, Maghrib, Isha})
+    setImportantTimes({Sunrise, Sunset, Imsak, Midnight, Firstthird, Lastthird})
+    setLoading(false)
   }
+
+  // load calendar data state variables
+  useEffect(() => {
+    setFormattedDate(formatDate(new Date(), "dd-mm-yyyy"))
+    setDate(new Date())
+  }, [])
 
   // load calendar data when anything changes
   useEffect(() => {
+    if(formattedDate.trim() == "") return
     getCalendarData()
   }, [formattedDate, country, city])
 
   const randomBg = useMemo(() => randomBgImage(), [])
+
+  const renderLoader = () => {
+    return(
+      <>
+        <CardLoader />
+        <CardLoader />
+        <CardLoader />
+      </>
+    )
+  }
 
   return (
     <div className='calendar-page' id='calendar-page'>
@@ -148,6 +176,109 @@ const CalendarPage = () => {
               />
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* show dates */}
+      <section className="show-calendar-dates section bg-gray-100 dark:bg-inherit" id="show-calendar-data">
+        <div className="container">
+
+          <h3 className='title text-center text-primary'>Date</h3>
+          <div className="dates grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+
+            {
+              (!loading && calendrData != null) &&
+              <>
+                <SurahInfoCard
+                  label={"Date"}
+                  infoValue={calendrData?.date?.gregorian?.date}
+                />
+                <SurahInfoCard
+                  label={"Hijri date"}
+                  infoValue={calendrData?.date?.hijri?.date}
+                />
+                <SurahInfoCard
+                  label={"Hijri week (En)"}
+                  infoValue={calendrData?.date?.hijri?.weekday?.en}
+                />
+                <SurahInfoCard
+                  label={"Hijri week (Ar)"}
+                  infoValue={calendrData?.date?.hijri?.weekday?.ar}
+                />
+                <SurahInfoCard
+                  label={"Hijri month (En)"}
+                  infoValue={calendrData?.date?.hijri?.month?.en}
+                />
+                <SurahInfoCard
+                  label={"Hijri month (Ar)"}
+                  infoValue={calendrData?.date?.hijri?.month?.ar}
+                />
+                <SurahInfoCard
+                  label={"Timezone"}
+                  infoValue={calendrData?.meta?.timezone}
+                />
+              </>
+            }
+
+            {
+              loading && renderLoader()
+            }
+
+          </div>
+        </div>
+      </section>
+
+      {/* show prayer times */}
+      <section className="show-prayer-times section" id="show-prayer-times">
+        <div className="container">
+          <h3 className='title text-center text-primary'>Prayer times</h3>
+
+          <div className="prayer-times grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+            {
+              (!loading && prayerTimes != null) &&
+              Object.keys(prayerTimes).map((e, index) => (
+                <SurahInfoCard 
+                  label={e}
+                  infoValue={prayerTimes[e]}
+                  key={index}
+                />
+              ))
+            }
+            {
+              loading && renderLoader()
+            }
+          </div>
+
+        </div>
+      </section>
+
+      {/* show important times */}
+      <section className="show-important-times section bg-gray-100 dark:bg-inherit" id="show-important-times">
+        <div className="container">
+
+          <h3 className='title text-center text-primary'>Other important times</h3>
+          <div className="important-times grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+            {
+              (!loading && importantTimes != null) &&
+              Object.keys(importantTimes).map((e, index) => {
+                let label = e
+                if (label == "Firstthird" || label == "Lastthird"){
+                  label = label.split('third')[0] + " third"
+                }
+
+                return(
+                  <SurahInfoCard
+                    label={label}
+                    infoValue={importantTimes[e]}
+                    key={index}
+                  />
+                )
+              })
+            }
+            {
+              loading && renderLoader()
+            }
           </div>
         </div>
       </section>
