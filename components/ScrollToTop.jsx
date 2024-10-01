@@ -33,7 +33,8 @@ const ScrollToTop = () => {
   return (
     <Button
       onClick={scrollToTop}
-      className={`fixed bottom-5 right-5 px-3 py-2 rounded-md bg-primary text-white shadow-lg transition-all duration-500 ${visible ? "opacity-100 visible" : "opacity-0 invisible"}`}
+      className={`fixed bottom-20 right-5 px-3 py-2 rounded-md bg-primary text-white shadow-lg transition-all duration-500 
+        ${visible ? "opacity-100 visible" : "opacity-0 invisible"} md:bottom-5 md:right-5 border-2 border-white`}
       aria-label="Scroll to top"
     >
       <ArrowUp size={20} />
