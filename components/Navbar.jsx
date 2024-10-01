@@ -11,9 +11,13 @@ import { useTheme } from 'next-themes'
 
 // logo
 import logo from "../public/images/QuranApp-logo-green.png"
+import { usePathname } from 'next/navigation'
 
 
 function Navbar() {
+
+  const pathname = usePathname()
+  console.log(pathname)
 
   const { setTheme } = useTheme()
   const [showNavbar, setShowNavbar] = useState(true)
@@ -46,7 +50,7 @@ function Navbar() {
   }, [lastScrollY])
 
   // nav link list design
-  const navLinkList = "ml-2 font-medium text-slate-50 px-4 hover:bg-white hover:text-black h-full flex items-center jutify-center"
+  const navLinkList = "font-medium text-slate-50 px-6 hover:bg-white hover:text-black h-full flex items-center jutify-center"
   const dropdownItemClass = "cursor-pointer hover:!bg-emerald-500 hover:!text-white"
 
 
@@ -75,19 +79,19 @@ function Navbar() {
         {/* links */}
         <div className="links h-full flex justify-between items-center gap-4">
           <ul className='list-none h-full flex flex-row'>
-            <li className={navLinkList}>
+            <li className={`${navLinkList} ${pathname == '/' && "navItem-active"}`}>
               <Link href="/">Home</Link>
             </li>
-            <li className={navLinkList}>
+            <li className={`${navLinkList} ${pathname.includes("/surah") && "navItem-active"}`}>
               <Link href="/surah">Surah</Link>
             </li>
-            <li className={navLinkList}>
+            <li className={`${navLinkList} ${pathname.includes("/juz") && "navItem-active"}`}>
               <Link href="/juz">Juz</Link>
             </li>
-            <li className={navLinkList}>
+            <li className={`${navLinkList} ${pathname.includes("/audio") && "navItem-active"}`}>
               <Link href="/audio">Audio</Link>
             </li>
-            <li className={navLinkList}>
+            <li className={`${navLinkList} ${pathname.includes("/calendar") && "navItem-active"}`}>
               <Link href="/calendar">Calendar</Link>
             </li>
           </ul>

@@ -78,7 +78,7 @@ html {
 
 ::selection {
   background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  color: white;
 }
 
 body {
@@ -110,6 +110,11 @@ body {
   @apply border-b-slate-400;
   @apply pb-3;
   @apply mb-5;
+}
+
+.navItem-active{
+  @apply !bg-white;
+  @apply !text-black;
 }
 
 @layer base {
